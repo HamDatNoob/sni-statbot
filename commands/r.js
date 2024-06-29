@@ -12,7 +12,7 @@ module.exports = {
         .setRequired(false)
     ),
     async execute(interaction){
-        let username = interaction.options.getString("username").toLowerCase();
+        let username = interaction.options.getString("username")?.toLowerCase();
         
         if(username == undefined){
             username = await db.get(`links.${interaction.user.id}`);

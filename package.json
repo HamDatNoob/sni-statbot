@@ -1,0 +1,21 @@
+{
+  "name": "sni-statbot",
+  "version": "1.0",
+  "description": "stats for saturday night invite",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "hamdatnoob",
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "discord.js": "^14.15.3",
+    "quick.db": "^9.1.7"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "sni-statbot",
-  "version": "1.0",
+  "version": "1.1",
   "description": "stats for saturday night invite",
   "main": "main.js",
   "scripts": {
@@ -16,6 +16,7 @@
   "dependencies": {
     "better-sqlite3": "^11.0.0",
     "discord.js": "^14.15.3",
+    "node-schedule": "^2.1.1",
     "quick.db": "^9.1.7"
   }
 }

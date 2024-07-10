@@ -1,5 +1,8 @@
 const package = require("../package.json");
-const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, escapeUnderline } = require("discord.js");
+const { QuickDB } = require("quick.db");
+const db = new QuickDB();
+const schedule = require('node-schedule');
+const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 async function listKdr(page, stats, interaction){
     let set = stats.slice(page * 10, Math.min(page * 10 + 10, stats.length));
@@ -73,10 +76,59 @@ async function listKdr(page, stats, interaction){
             .addComponents(navButtons)
     );
     
-    if(interaction.replied) {
-        return interaction.update({ embeds: embed, components: rows });
-    }else{
+    if(interaction.message == undefined){
+        let id;
+        await interaction.editReply({ embeds: embed, components: rows }).then(async res => {
+            id = res.id;
+            await db.set(`messages.${id}`, interaction.user.id);
+        });
+        
+        setTimeout(async () => {
+            const offButtons = [
+                new ButtonBuilder()
+                    .setEmoji('⏮️')
+                    .setCustomId('kdr_first_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('◀️')
+                    .setCustomId('kdr_back_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('#️⃣')
+                    .setCustomId('kdr_search_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('▶️')
+                    .setCustomId('kdr_next_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('⏭️')
+                    .setCustomId('kdr_last_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+            ];
+
+            const offRows = [
+                new ActionRowBuilder()
+                    .addComponents(offButtons)
+            ];
+
+            await interaction.editReply({ embeds: embed, components: offRows });
+
+            await db.delete(`messages.${id}`);
+        }, 300000)
+    }else if(interaction.member.id == await db.get(`messages.${interaction.message.id}`)){
         return interaction.editReply({ embeds: embed, components: rows });
+    }else{
+        return interaction.followUp({ embeds: embed, components: rows, ephemeral: true });
     }
 }
 

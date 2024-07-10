@@ -35,7 +35,7 @@ module.exports = {
 
         const players = [];
         for(let i = 0; i < 5; i++){
-            players.push(interaction.options.getString(`username${i + 1}`));
+            players.push(interaction.options.getString(`username${i + 1}`).toLowerCase());
 
             if(await db.get(`stats.${players[i]}`) == undefined) return interaction.followUp({ content: `\`${players[i]}\` is not registered!`, ephemeral: true });
         }

@@ -16,6 +16,6 @@ module.exports = {
         const row = new ActionRowBuilder()
         .addComponents(confirm);
 
-        return interaction.reply({ content: "Have you backed up the database yet? If not, DO THAT!", components: [row], ephemeral: true });
+        return interaction.reply({ content: "Have you backed up the database yet? If not, DO THAT!", components: [row] });
     }
 }

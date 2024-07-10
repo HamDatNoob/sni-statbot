@@ -72,6 +72,6 @@ module.exports = {
         await db.set(`stats.${username}.weekWins`, weekWins);
         await db.set(`stats.${username}.participated`, participated);
 
-        return interaction.followUp({ content: `Changed \`${username}\`'s stats!` });
+        return interaction.followUp({ content: `Changed \`${await db.get(`stats.${player}.username`)}\`'s stats!` });
     }
 }

@@ -33,31 +33,31 @@ async function listParticipation(page, stats, interaction){
     const navButtons = [
         new ButtonBuilder()
             .setEmoji('⏮️')
-            .setCustomId('participation_first')
+            .setCustomId('kdr_first')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('◀️')
-            .setCustomId('participation_back')
+            .setCustomId('kdr_back')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('#️⃣')
-            .setCustomId('participation_search')
+            .setCustomId('kdr_search')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[1]),
 
         new ButtonBuilder()
             .setEmoji('▶️')
-            .setCustomId('participation_next')
+            .setCustomId('kdr_next')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
 
         new ButtonBuilder()
             .setEmoji('⏭️')
-            .setCustomId('participation_last')
+            .setCustomId('kdr_last')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
     ];
@@ -66,11 +66,60 @@ async function listParticipation(page, stats, interaction){
         new ActionRowBuilder()
             .addComponents(navButtons)
     );
+    
+    if(interaction.message == undefined){
+        let id;
+        await interaction.editReply({ embeds: embed, components: rows }).then(async res => {
+            id = res.id;
+            await db.set(`messages.${id}`, interaction.user.id);
+        });
         
-    if(interaction.replied) {
-        return interaction.update({ embeds: embed, components: rows });
-    }else{
+        setTimeout(async () => {
+            const offButtons = [
+                new ButtonBuilder()
+                    .setEmoji('⏮️')
+                    .setCustomId('participation_first_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('◀️')
+                    .setCustomId('participation_back_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('#️⃣')
+                    .setCustomId('participation_search_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('▶️')
+                    .setCustomId('participation_next_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+        
+                new ButtonBuilder()
+                    .setEmoji('⏭️')
+                    .setCustomId('participation_last_disabled')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true),
+            ];
+
+            const offRows = [
+                new ActionRowBuilder()
+                    .addComponents(offButtons)
+            ];
+
+            await interaction.editReply({ embeds: embed, components: offRows });
+
+            await db.delete(`messages.${id}`);
+        }, 300000)
+    }else if(interaction.member.id == await db.get(`messages.${interaction.message.id}`)){
         return interaction.editReply({ embeds: embed, components: rows });
+    }else{
+        return interaction.followUp({ embeds: embed, components: rows, ephemeral: true });
     }
 }
 

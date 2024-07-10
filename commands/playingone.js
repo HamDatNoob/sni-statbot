@@ -17,12 +17,12 @@ module.exports = {
 
         await interaction.deferReply();
 
-        const player = interaction.options.getString('username');
+        const player = interaction.options.getString('username').toLowerCase();
 
         if(await db.get(`stats.${player}`) == undefined) return interaction.followUp({ content: `\`${aUsername}\` is not registered!`, ephemeral: true });
 
         await db.add(`stats.${player}.participated`, 1);
         
-        return interaction.followUp({ content: `Incremented \`${player}\`'s participation count!` });
+        return interaction.followUp({ content: `Incremented \`${await db.get(`stats.${player}.username`)}\`'s participation count!` });
     }
 }

@@ -52,7 +52,7 @@ module.exports = {
 
         await interaction.deferReply();
 
-        const username = interaction.options.getString('username');
+        const username = interaction.options.getString('username').toLowerCase();
 
         if(await db.get(`stats.${username}`) == undefined) return interaction.followUp({ content: `\`${username}\` is not registered!`, ephemeral: true });
 
@@ -72,6 +72,6 @@ module.exports = {
         await db.set(`stats.${username}.weekWins`, weekWins);
         await db.set(`stats.${username}.participated`, participated);
 
-        return interaction.followUp({ content: `Changed \`${await db.get(`stats.${player}.username`)}\`'s stats!` });
+        return interaction.followUp({ content: `Changed \`${await db.get(`stats.${username}.username`)}\`'s stats!` });
     }
 }

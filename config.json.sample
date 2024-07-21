@@ -3,6 +3,7 @@
     "clientId": "",
     "guildId": "",
     "staffId": "",
+    "captainId": "",
     "hamId": "",
     "orgChannelId": "",
     "picksChannelId": "",

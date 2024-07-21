@@ -13,7 +13,8 @@ module.exports = {
         rule.tz = 'Etc/GMT+4';
 
         const job = schedule.scheduleJob(rule, async function(){
-            const members = Array.from(await client.channels.cache.get(orgChannelId).members.keys());
+            const fullMembers = await client.channels.cache.get(orgChannelId).members;
+            const members = Array.from(fullMembers.keys());
             const num = members.length;
 
             if(num >= 20){
@@ -24,7 +25,11 @@ module.exports = {
                 for(let id of members){
                     let usernameNoCaps = await db.get(`links.${id}`);
                     let usernameCaps = await db.get(`stats.${usernameNoCaps}.username`);
-
+                    
+                    if(usernameCaps == undefined){
+                        usernameCaps = `Unregistered Player (${fullMembers.get(id).user.username})`;
+                    }
+    
                     output += `${usernameCaps}\n`;
                 }
 

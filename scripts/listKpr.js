@@ -1,5 +1,7 @@
 const package = require("../package.json");
 const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { QuickDB } = require("quick.db");
+const db = new QuickDB();
 
 async function listKpr(page, stats, interaction){
     let set = stats.slice(page * 10, Math.min(page * 10 + 10, stats.length));
@@ -39,31 +41,31 @@ async function listKpr(page, stats, interaction){
     const navButtons = [
         new ButtonBuilder()
             .setEmoji('⏮️')
-            .setCustomId('kdr_first')
+            .setCustomId('kpr_first')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('◀️')
-            .setCustomId('kdr_back')
+            .setCustomId('kpr_back')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('#️⃣')
-            .setCustomId('kdr_search')
+            .setCustomId('kpr_search')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[1]),
 
         new ButtonBuilder()
             .setEmoji('▶️')
-            .setCustomId('kdr_next')
+            .setCustomId('kpr_next')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
 
         new ButtonBuilder()
             .setEmoji('⏭️')
-            .setCustomId('kdr_last')
+            .setCustomId('kpr_last')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
     ];

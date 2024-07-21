@@ -18,7 +18,6 @@ module.exports = {
                 let usernameNoCaps = await db.get(`links.${id}`);
                 let usernameCaps = await db.get(`stats.${usernameNoCaps}.username`);
                 
-
                 if(usernameCaps == undefined){
                     usernameCaps = `Unregistered Player (${fullMembers.get(id).user.username})`
                 }

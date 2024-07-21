@@ -30,16 +30,20 @@ module.exports = {
             });
 
             // reassigns captains their original names
-            const nicknames = await db.get('captains');
+            try{
+                const nicknames = await db.get('captains');
 
-            await client.guilds.cache.get(guildId).members.fetch({ limit: 1000 }).then(members => {
-                for(let obj of nicknames){
-                    members.get(obj.id).setNickname(obj.nickname);
-                }
-            });
+                await client.guilds.cache.get(guildId).members.fetch({ limit: 1000 }).then(members => {
+                    for(let obj of nicknames){
+                        members.get(obj.id).setNickname(obj.nickname);
+                    }
+                });
+    
+                await db.set('captains', []);
+            }catch(err){
+                console.error(err);
+            }
 
-            await db.set('captains', []);
-            
             const season = await db.get(`currentSeason`);
             const week = await db.get(`currentWeek`);
 

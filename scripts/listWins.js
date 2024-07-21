@@ -1,5 +1,7 @@
 const package = require("../package.json");
 const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { QuickDB } = require("quick.db");
+const db = new QuickDB();
 
 async function listWins(page, stats, interaction){
     let set = stats.slice(page * 10, Math.min(page * 10 + 10, stats.length));
@@ -33,31 +35,31 @@ async function listWins(page, stats, interaction){
     const navButtons = [
         new ButtonBuilder()
             .setEmoji('⏮️')
-            .setCustomId('kdr_first')
+            .setCustomId('wins_first')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('◀️')
-            .setCustomId('kdr_back')
+            .setCustomId('wins_back')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[0]),
 
         new ButtonBuilder()
             .setEmoji('#️⃣')
-            .setCustomId('kdr_search')
+            .setCustomId('wins_search')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[1]),
 
         new ButtonBuilder()
             .setEmoji('▶️')
-            .setCustomId('kdr_next')
+            .setCustomId('wins_next')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
 
         new ButtonBuilder()
             .setEmoji('⏭️')
-            .setCustomId('kdr_last')
+            .setCustomId('wins_last')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(disabledButtons[2]),
     ];

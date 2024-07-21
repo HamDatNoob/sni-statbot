@@ -1,6 +1,6 @@
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
-const { staffId, guildId } = require("../config.json");
+const { staffId, captainId } = require("../config.json");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -29,15 +29,15 @@ module.exports = {
 
         await interaction.deferReply();
 
-        const captainA = interaction.options.getUser('captain1');
-        const captainB = interaction.options.getUser('captain2');
-        const captainC = interaction.options.getUser('captain3');
-        const captainD = interaction.options.getUser('captain4');
+        const captainA = interaction.options.getUser('captaina');
+        const captainB = interaction.options.getUser('captainb');
+        const captainC = interaction.options.getUser('captainc');
+        const captainD = interaction.options.getUser('captaind');
 
-        const memberA = interaction.client.guilds.cache.get(guildId).members.cache.get(captainA.id);
-        const memberB = interaction.client.guilds.cache.get(guildId).members.cache.get(captainB.id);
-        const memberC = interaction.client.guilds.cache.get(guildId).members.cache.get(captainC.id);
-        const memberD = interaction.client.guilds.cache.get(guildId).members.cache.get(captainD.id);
+        const memberA = interaction.guild.members.cache.get(captainA.id);
+        const memberB = interaction.guild.members.cache.get(captainB.id);
+        const memberC = interaction.guild.members.cache.get(captainC.id);
+        const memberD = interaction.guild.members.cache.get(captainD.id);
 
         const nicknameA = memberA.nickname ?? memberA.user.globalName ?? memberA.user.username;
         const nicknameB = memberB.nickname ?? memberB.user.globalName ?? memberB.user.username;
@@ -50,6 +50,13 @@ module.exports = {
         await memberB.setNickname(`[B] ${nicknameB}`);
         await memberC.setNickname(`[C] ${nicknameC}`);
         await memberD.setNickname(`[D] ${nicknameD}`);
+
+        const captain = await interaction.guild.roles.cache.get(captainId);
+
+        await memberA.roles.add(captain);
+        await memberB.roles.add(captain);
+        await memberC.roles.add(captain);
+        await memberD.roles.add(captain);
 
         return interaction.editReply({ content: `Pick Order: ${captainA} > ${captainB} > ${captainC} > ${captainD}` });
     }

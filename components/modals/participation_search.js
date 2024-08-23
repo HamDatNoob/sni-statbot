@@ -7,7 +7,7 @@ module.exports = {
         await interaction.deferUpdate();
 
         const stats = Object.values(await db.get("stats"));
-        stats.sort((a, b) => b.particpated - a.participated); // SORTS BY PARTICPATION
+        stats.sort((a, b) => b.participated - a.participated); // SORTS BY PARTICPATION
 
         let pg = parseInt(interaction.fields.getTextInputValue('participation_search_pageInput')) - 1;
 

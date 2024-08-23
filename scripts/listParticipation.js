@@ -114,7 +114,7 @@ async function listParticipation(page, stats, interaction){
                     .addComponents(offButtons)
             ];
 
-            await interaction.editReply({ embeds: embed, components: offRows });
+            await interaction.editReply({ components: offRows });
 
             await db.delete(`messages.${id}`);
         }, 300000)

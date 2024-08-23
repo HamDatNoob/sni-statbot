@@ -8,7 +8,7 @@ module.exports = {
         await interaction.deferUpdate();
 
         const stats = Object.values(await db.get("stats"));
-        stats.sort((a, b) => b.particpated - a.participated); // SORTS BY PARTICPATION
+        stats.sort((a, b) => b.participated - a.participated); // SORTS BY PARTICPATION
 
         listParticipation(Math.floor(stats.length / 10), stats, interaction);
     }

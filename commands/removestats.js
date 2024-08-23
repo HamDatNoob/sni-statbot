@@ -5,8 +5,8 @@ const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('inputstats')
-    .setDescription('Add stats from the game into the database')
+    .setName('removestats')
+    .setDescription('Remove stats from the game into the database')
     .addStringOption(option => option
         .setName('stats')
         .setDescription('The stats from /exportstats, plaintext')
@@ -100,23 +100,23 @@ module.exports = {
         const aps = aPlayerStats.concat(bPlayerStats);
 
         for(let i in aps){
-            await db.add(`stats.${aps[i].username}.kills`, aps[i].kills);
-            await db.add(`stats.${aps[i].username}.deaths`, aps[i].deaths);
-            await db.add(`stats.${aps[i].username}.rounds`, rounds);
-            await db.add(`stats.${aps[i].username}.games`, 1);
-            if(aps[i].won) await db.add(`stats.${aps[i].username}.gameWins`, 1);
+            await db.sub(`stats.${aps[i].username}.kills`, aps[i].kills);
+            await db.sub(`stats.${aps[i].username}.deaths`, aps[i].deaths);
+            await db.sub(`stats.${aps[i].username}.rounds`, rounds);
+            await db.sub(`stats.${aps[i].username}.games`, 1);
+            if(aps[i].won) await db.sub(`stats.${aps[i].username}.gameWins`, 1);
         }
 
         map = map.charAt(0).toUpperCase() + map.slice(1);
 
-        await db.add(`maps.options.${map}.picked`, 1);
+        await db.sub(`maps.options.${map}.picked`, 1);
 
         async function playerStats(stats){
             return `${await db.get(`stats.${stats.username}.username`)} ${stats.stats} ${stats.diff} ${stats.hsr} ${stats.rate}\n`;
         }
 
         async function makeStats(){
-            let output = `\`\`\`\nCops vs Crims - ${map}\nA ${aScore}\n`;
+            let output = `**REMOVED STATS:**\n\`\`\`\nCops vs Crims - ${map}\nA ${aScore}\n`;
 
             // TEAM A STATS
             for(let i in aPlayerStats){

@@ -50,10 +50,12 @@ module.exports = {
         const maps = [map1, map2, map3, map4, map5];
 
         for(let i in maps){
+            await db.add(`maps.options.${maps[i]}.inPool`, 1);
+
             maps[i].toLowerCase();
         }
 
-        await db.set(`maps.${week}`, maps);
+        await db.set(`maps.weeks.${week}`, maps);
 
         interaction.reply({ content: `Available maps for week ${week} are now: \`\"${map1}\", \"${map2}\", \"${map3}\", \"${map4}\", \"${map5}\"\`` });
     }

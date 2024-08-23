@@ -1,4 +1,4 @@
-const { orgChannelId, picksChannelId } = require('./../config.json');
+const { orgChannelId, picksChannelId } = require('../config.json');
 const schedule = require('node-schedule');
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
@@ -6,8 +6,8 @@ const db = new QuickDB();
 module.exports = {
     async execute(client){
         const rule = new schedule.RecurrenceRule(); // 7pm EDT on Saturday (11pm UTC)
-        rule.dayOfWeek = 6;
-        rule.hour = 19;
+        rule.dayOfWeek = await db.get(`startDay`);
+        rule.hour = await db.get(`startHour`);
         rule.minute = 0;
         rule.second = 0;
         rule.tz = 'Etc/GMT+4';
@@ -35,7 +35,9 @@ module.exports = {
 
                 output += `\`\`\``;
 
-                client.channels.cache.get(picksChannelId).send(output);
+                client.channels.cache.get(picksChannelId).send(output).then(async message => {
+                    await db.set(`playersMessage`, message.id);
+                });
             }else{ // <20 (not enough to play)
                 client.channels.cache.get(picksChannelId).send('# NOT ENOUGH PLAYERS TO START!\nPicks will start if/when the call reaches 20 players.');
             }

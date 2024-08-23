@@ -1,12 +1,12 @@
 module.exports = {
 	name: 'ready',
 	once: true,
-	execute(client) {
+	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 
-		require('../scripts/7pm.js').execute(client); // starts the 7pm task
-		require('../scripts/12am.js').execute(client); // starts the 12am task
+		require('../scripts/gameStart.js').execute(client); // starts the start task
+		require('../scripts/gameReset.js').execute(client); // starts the reset task
 
-		console.log('Started the 7pm and 12am message tasks');
+		console.log('Started the start and reset message tasks');
 	},
 }; 

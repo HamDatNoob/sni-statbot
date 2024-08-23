@@ -19,7 +19,7 @@ module.exports = {
 
         let output = "";
         await interaction.client.channels.cache.get(statsChannelId).messages.fetch({ limit: 100 }).then(messages => {
-            messages.forEach(msg => {
+            messages.reverse().forEach(msg => {
                 output += `${msg.author.username}: ${msg.content}\n\n`
             });
         });
